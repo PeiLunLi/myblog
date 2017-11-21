@@ -1,0 +1,10 @@
+{% extends "post/base.html" %}
+
+{% block content %}
+	{% for a in articles %}
+	<div class="index">
+		<span class="date">{{a.date}}</span>
+		<a href="/post/show/?aid={{a.id}}">{{a.title}}</a>
+	</div>
+	{% endfor %}
+{% endblock %}

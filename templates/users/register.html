@@ -1,0 +1,46 @@
+{% extends "post/base.html" %}
+{% block head %}
+     <style>
+        .error_msg{
+            color: red;
+        }
+    </style>
+{% endblock %}
+
+{%block content %}
+    <h1>注册</h1>
+<div class="container">
+        <form enctype="multipart/form-data"  action="{% url 'users:register' %}" method="post">
+            {% csrf_token %}
+            <div>
+                请输入用户名：<input type="text" name="username" placeholder="请输入用户名">
+            </div>
+              <div>
+                请输入邮箱：<input type="text" name="email" placeholder="请输入邮箱">
+            </div>
+              <div>
+                请输入密码：<input type="text" name="password" placeholder="请输入密码">
+            </div>
+              <div>
+                请再次输入密码：<input type="text" name="password2" placeholder="请再次输入密码">
+            </div>
+              <div>
+                请输入昵称：<input type="text" name="nick_name" placeholder="请输入昵称">
+            </div>
+
+              <div>
+{#                  <img width="80" height="80" class="scrollLoading" src="{{ MEDIA_URL }}{{ request.user.image }}"/>#}
+                请上传头像：<input type="file" name="image" value="">
+            </div>
+            <input type="submit"  value="注册">
+        </form>
+    </div>
+    <span class="error_msg">{{ msg }}</span>
+     {% for field in form %}
+        <span class="error_msg">{{ field.errors }}</span>
+    {% endfor %}
+
+{%endblock%}
+
+{% block title %}{% endblock %}
+{% block search %}{% endblock %}

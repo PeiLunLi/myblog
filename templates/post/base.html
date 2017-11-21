@@ -1,0 +1,48 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>MyBlog</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+{% block title %}
+   {% if request.user.is_authenticated %}
+       <div style="">
+        <img width="80" height="80" class="scrollLoading" src="{{ MEDIA_URL }}{{ request.user.image }}"/><h3>{{  request.user.nick_name}}<a style="color: #00b7ee" href="{% url 'users:logoff' %}">点击退出</a></h3>
+       </div>
+
+    {% else %}
+     <h3><a href="{% url 'users:login' %}">点击登陆</a></h3>
+            {% endif %}
+{% endblock %}
+	<div class="container">
+		<h1><a href="/post/home/">MyBlog</a></h1>
+
+
+        {% block new %}
+        {% if request.user.is_authenticated %}
+        <h5><a  href="{% url 'new_post' %}">新文章</a></h5>
+        {% endif %}
+    {% endblock %}
+{% block search %}
+		<form method="POST" action="/post/search/" style="text-align: right;">
+			{% csrf_token %}
+			<input type="text" name="keyword">
+			<input type="submit" name="搜索">
+		</form>
+{% endblock %}
+
+		<hr>
+
+		<div class="content">{%block content %}{%endblock%}</div>
+	</div>
+	<div class="footer">Powered by Django</div>
+</body>
+
+</html>

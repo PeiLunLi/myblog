@@ -1,0 +1,18 @@
+{% extends "post/base.html" %}
+
+{%block content %}
+    <div class="container">
+        <form method="POST" action="{% url 'new_post' %}">
+            {% csrf_token %}
+            <div>
+                <input type="text" name="title" placeholder="标题" >
+            </div>
+            <div>
+                <textarea name="content" rows="20" cols="100" placeholder="正文"></textarea>
+            </div>
+            <input type="hidden" name="uid" value="{{request.user.id}}">
+            <input type="submit" name="提交">
+        </form>
+    </div>
+{%endblock%}
+{% block new %}{% endblock %}

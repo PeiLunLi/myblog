@@ -1,0 +1,42 @@
+{% extends "post/base.html" %}
+
+{%block content %}
+	<div class="container">
+		<h1 style="text-align: left;">{{article.title}}</h1>
+		<span class="date">{{article.create}}</span>
+    {% if request.user.is_authenticated %}
+		<div style="float: right;">
+			<a href="/post/edit/?aid={{article.id}}">编辑</a>
+			<a href="/post/delete/?aid={{article.id}}">删除</a>
+		</div>
+    {% endif %}
+		<hr>
+
+		<!-- 正文 -->
+		<div>{{article.content | linebreaks}}</div>
+		<hr>
+
+		<!-- 评论 -->
+		<div>
+			{% for c in comments %}
+			<div>
+				<div>At <span class="date">{{c.create}}</span> {{c.name}} 说：</div>
+				<div>{{c.content | linebreaks}}</div>
+			</div>
+			<hr>
+			{% endfor %}
+		</div>
+
+		<!-- 发表评论 -->
+		<form method="POST" action="/post/comment/">
+			{% csrf_token %}
+			<div>姓名：<input type="text" name="name"></div>
+			<div style="vertical-align: top;">
+				<span style="vertical-align: top;">内容：</span>
+				<textarea name="comment" rows="5" cols="50"></textarea>
+			</div>
+			<input type="hidden" name="aid" value="{{article.id}}">
+			<input type="submit" name="发表评论">
+		</form>
+	</div>
+{%endblock%}
