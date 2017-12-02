@@ -1,4 +1,4 @@
-__author__ = 'Luo'
+
 import hashlib  # 推荐使用
 
 
