@@ -1,4 +1,4 @@
-__author__ = 'Luo'
+
 
 from operation.models import EmailVerifyRecord
 from uuid import uuid4
