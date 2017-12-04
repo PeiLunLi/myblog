@@ -12,9 +12,13 @@ from myblog import settings
 from users.models import UserPro
 from .user_form import LoginForm,RegisterForm
 from email_send import send_email_tools
-#自定义验证
+
+
 class CustomBackend(ModelBackend):
     def authenticate(self, username=None, password=None, **kwargs):
+        '''
+        自定义验证
+        '''
         try:
             # 查找用户在 model 中是否存在，用 get 可以确保只有一个该用户
             user = UserPro.objects.get(Q(username=username)|Q(email=username))
@@ -26,13 +30,18 @@ class CustomBackend(ModelBackend):
 
 # Create your views here.
 def logoff(request):
+    '''
+    登出
+    '''
     if request.user.is_authenticated():
-        print('退出了')
         logout(request)
         return redirect(reverse('home'))
 
+    
 def User_login(request):
-
+    '''
+    登陆视图
+    '''
     if request.method =='POST':
         objPost = LoginForm(request.POST)
         if objPost.is_valid():
@@ -46,16 +55,21 @@ def User_login(request):
                 login(request,user)
                 return redirect(reverse('home'))
             else:
-                return render(request,'users/login.html',{'msg':'用户名或密码错误'})
+                return render(request, 'users/login.html',{'msg': '用户名或密码错误'})
         else:
-            return render(request, 'users/login.html', {'form':objPost})
+            return render(request, 'users/login.html', {'form': objPost})
 
     else:
 
         return render(request, 'users/login.html')
+    
+    
 def register(request):
+    '''
+    注册
+    '''
     if request.method =="GET":
-        return render(request,'users/register.html')
+        return render(request, 'users/register.html')
     elif request.method =='POST':
         objPost = RegisterForm(request.POST)
         if objPost.is_valid():
@@ -64,13 +78,14 @@ def register(request):
             password = request.POST.get('password', '')
             email =request.POST.get('email','')
             #邮箱不允许重复
-            nick_name =request.POST.get('nick_name','')
+            nick_name = request.POST.get('nick_name', '')
             image = request.FILES.get("image")
 
             # file_name = image.name  # 文件名
             file_content = image.read()  # 读取上传文件所有内容
             path = os.path.join("image/" + md5utils.getMD5(file_content))
             filePath = os.path.join(settings.MEDIA_ROOT, path)
+            
             if image.multiple_chunks():  # 判断文件是否过大 2.5M为标准
                 with open(filePath, 'wb') as f:
                     for chunk in image.chunks():  # 大文件分块写入文件
