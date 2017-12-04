@@ -4,6 +4,7 @@ from django.db import models
 
 # Create your models here.
 
+
 class EmailVerifyRecord(models.Model):
     code = models.CharField(max_length=20, verbose_name="邮箱验证码")
     email = models.EmailField(max_length=50, verbose_name="邮箱")
