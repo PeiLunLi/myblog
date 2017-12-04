@@ -1,6 +1,8 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from captcha.fields import CaptchaField
+
+
 class LoginForm(forms.Form):
     # captcha = CaptchaField()
     username = forms.CharField(required=True, error_messages={'required': '用户名不能为空.'})
@@ -16,6 +18,9 @@ class RegisterForm(forms.Form):
     nick_name = forms.CharField(required=True, error_messages={'required': '昵称不能为空.'})
 
     def clean_password2(self):
+        '''
+        验证密码是否两次输入一致
+        '''
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
         if password1 and password2 and password1 != password2:
